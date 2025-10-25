@@ -6,29 +6,32 @@ from gtts import gTTS
 from PIL import Image
 import base64
 
-# --- ESTILOS DE LIBRO ABIERTO ---
+# --- ESTILOS GENERALES (aplican a toda la página) ---
 st.markdown("""
     <style>
-    body {
-        background-color: #f5f1e6;
-    }
-    .book-wrapper {
+    /* Fondo general */
+    [data-testid="stAppViewContainer"] {
         background: linear-gradient(90deg, #fdf8e6 49.5%, #e9e0c9 50.5%);
-        width: 85%;
-        margin: 50px auto;
+        color: #3b2d1f;
+        font-family: 'Georgia', serif;
+    }
+
+    /* Área principal tipo libro */
+    .book-wrapper {
+        width: 80%;
+        margin: 60px auto;
         padding: 50px 70px;
         border-radius: 15px;
+        background: rgba(255,255,255,0.5);
         box-shadow: inset 0 0 25px rgba(0,0,0,0.1), 5px 5px 25px rgba(0,0,0,0.25);
-        font-family: 'Georgia', serif;
-        color: #3b2d1f;
         line-height: 1.8;
         text-align: justify;
-        column-count: 2;
-        column-gap: 80px;
+        position: relative;
         border-left: 8px solid #d2b48c;
         border-right: 8px solid #d2b48c;
-        position: relative;
     }
+
+    /* Pliegue central del libro */
     .book-wrapper::before {
         content: "";
         position: absolute;
@@ -39,32 +42,37 @@ st.markdown("""
         background: #d2b48c;
         box-shadow: 0 0 4px rgba(0,0,0,0.2);
     }
+
     .book-title {
         font-family: 'Cursive';
         font-size: 2.8em;
         text-align: center;
         color: #4b2e05;
         margin-bottom: 20px;
-        column-span: all;
     }
+
     .book-subtitle {
         text-align: center;
         font-style: italic;
         color: #6b4a2b;
         margin-bottom: 25px;
-        column-span: all;
     }
+
     .book-image {
         display: block;
         margin: 0 auto 25px auto;
         border-radius: 12px;
         box-shadow: 0 4px 12px rgba(0,0,0,0.3);
         width: 260px;
-        column-span: all;
     }
+
     .center {
         text-align: center;
-        column-span: all;
+    }
+
+    /* Quitar fondo gris de sidebar */
+    [data-testid="stSidebar"] {
+        background-color: #f2e8d5;
     }
     </style>
 """, unsafe_allow_html=True)
