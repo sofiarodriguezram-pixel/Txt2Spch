@@ -6,71 +6,112 @@ from gtts import gTTS
 from PIL import Image
 import base64
 
---- Estilo tipo libro antiguo ---
+# --- Estilos tipo libro ---
+st.markdown("""
+    <style>
+    body {
+        background-color: #f8f4e6;
+    }
+    .book-container {
+        background-color: #fffaf0;
+        border: 2px solid #d2b48c;
+        padding: 50px;
+        margin: 40px auto;
+        width: 80%;
+        border-radius: 15px;
+        box-shadow: 5px 5px 15px rgba(0,0,0,0.2);
+        font-family: 'Georgia', serif;
+        line-height: 1.8;
+        color: #3e2f1c;
+    }
+    .book-title {
+        font-family: 'Cursive';
+        text-align: center;
+        font-size: 2.5em;
+        color: #4b2e05;
+    }
+    .book-subtitle {
+        text-align: center;
+        font-style: italic;
+        color: #6b4a2b;
+    }
+    </style>
+""", unsafe_allow_html=True)
 
-page_bg = """
+# --- Contenido tipo libro ---
+st.markdown("<div class='book-container'>", unsafe_allow_html=True)
 
-<style> [data-testid="stAppViewContainer"] { background-color: #f5f0e6; background-image: radial-gradient(#e4d7c7 1px, transparent 1px); background-size: 20px 20px; font-family: "Georgia", serif; color: #3e2f1c; } [data-testid="stSidebar"] { background-color: #efe9dc; color: #3e2f1c; font-family: "Georgia", serif; } h1, h2, h3, h4 { font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif; font-style: italic; color: #3e2f1c; text-align: center; } textarea, .stTextInput, .stSelectbox { border-radius: 8px !important; border: 1px solid #c1a97f !important; } div.block-container { padding-top: 2rem; padding-bottom: 2rem; border-left: 6px double #c1a97f; border-right: 6px double #c1a97f; background-color: #faf7f2; box-shadow: 0px 0px 20px rgba(160, 130, 90, 0.3); border-radius: 12px; } .stAudio { background-color: #f5f0e6; border-radius: 10px; padding: 5px; } a { color: #6b4a1d; font-weight: bold; text-decoration: none; } a:hover { color: #a67c3b; text-decoration: underline; } </style>
+st.markdown("<h1 class='book-title'>Conversión de Texto a Audio</h1>", unsafe_allow_html=True)
 
-"""
-st.markdown(page_bg, unsafe_allow_html=True)
-
---- Contenido principal ---
-
-st.title("📖 Conversión de Texto a Audio")
-
-image = Image.open("gato_raton.png")
-st.image(image, width=300, caption="‘El gato y el ratón’ – Fábula corta")
+image = Image.open('gato_raton.png')
+st.image(image, width=300)
 
 with st.sidebar:
-st.subheader("✍️ Escribe o selecciona texto para escuchar")
+    st.subheader("Escribe o selecciona texto para escuchar.")
 
-os.makedirs("temp", exist_ok=True)
+try:
+    os.mkdir("temp")
+except:
+    pass
 
-st.subheader("Una pequeña fábula — Franz Kafka")
-st.markdown("""
-"¡Ay! —dijo el ratón—. El mundo se hace cada día más pequeño.
-Al principio era tan grande que le tenía miedo. Corría y corría,
-y me alegraba ver esos muros, a diestra y siniestra, en la distancia.
-Pero esas paredes se estrechan tan rápido que me encuentro en el último cuarto,
-y ahí en el rincón está la trampa sobre la cual debo pasar."
-— Franz Kafka
+st.markdown("<h3 class='book-subtitle'>Una pequeña Fábula</h3>", unsafe_allow_html=True)
+st.write("""
+¡Ay! —dijo el ratón—. El mundo se hace cada día más pequeño. 
+Al principio era tan grande que le tenía miedo. Corría y corría y por cierto 
+que me alegraba ver esos muros, a diestra y siniestra, en la distancia. 
+Pero esas paredes se estrechan tan rápido que me encuentro en el último cuarto 
+y ahí en el rincón está la trampa sobre la cual debo pasar. 
+“Todo lo que debes hacer es cambiar de rumbo”, dijo el gato... y se lo comió.
+
+**Franz Kafka.**
 """)
 
-st.markdown("### 🎧 ¿Quieres escucharlo? Escribe o copia el texto:")
+st.markdown("¿Quieres escucharlo? Copia o escribe el texto:")
 
-text = st.text_area("Texto a convertir en audio:")
+text = st.text_area("Ingrese el texto a escuchar:")
 
-option_lang = st.selectbox("Selecciona el idioma:", ("Español", "English"))
-lg = "es" if option_lang == "Español" else "en"
+option_lang = st.selectbox(
+    "Selecciona el idioma",
+    ("Español", "English")
+)
+lg = 'es' if option_lang == "Español" else 'en'
 
 def text_to_speech(text, tld, lg):
-tts = gTTS(text, lang=lg)
-file_name = text[:20] if text else "audio"
-tts.save(f"temp/{file_name}.mp3")
-return file_name
+    tts = gTTS(text, lang=lg)
+    try:
+        my_file_name = text[0:20]
+    except:
+        my_file_name = "audio"
+    tts.save(f"temp/{my_file_name}.mp3")
+    return my_file_name, text
 
-if st.button("📜 Convertir a Audio"):
-if text.strip():
-result = text_to_speech(text, "com", lg)
-audio_file = open(f"temp/{result}.mp3", "rb")
-audio_bytes = audio_file.read()
-st.markdown("## 🔊 Tu audio:")
-st.audio(audio_bytes, format="audio/mp3", start_time=0)
+if st.button("Convertir a Audio"):
+    result, output_text = text_to_speech(text, 'com', lg)
+    audio_file = open(f"temp/{result}.mp3", "rb")
+    audio_bytes = audio_file.read()
+    st.markdown("## 🎧 Tu audio:")
+    st.audio(audio_bytes, format="audio/mp3", start_time=0)
+
     with open(f"temp/{result}.mp3", "rb") as f:
         data = f.read()
 
-    bin_str = base64.b64encode(data).decode()
-    href = f'<a href="data:application/octet-stream;base64,{bin_str}" download="{result}.mp3">⬇️ Descargar archivo de audio</a>'
-    st.markdown(href, unsafe_allow_html=True)
-else:
-    st.warning("Por favor, ingresa un texto antes de convertir.")
+    def get_binary_file_downloader_html(bin_file, file_label='File'):
+        bin_str = base64.b64encode(data).decode()
+        href = f'<a href="data:application/octet-stream;base64,{bin_str}" download="{os.path.basename(bin_file)}" style="color:#4b2e05;">Descargar {file_label}</a>'
+        return href
+
+    st.markdown(get_binary_file_downloader_html("audio.mp3", file_label="Archivo de Audio"), unsafe_allow_html=True)
+
 def remove_files(n):
-mp3_files = glob.glob("temp/*.mp3")
-now = time.time()
-n_days = n * 86400
-for f in mp3_files:
-if os.stat(f).st_mtime < now - n_days:
-os.remove(f)
+    mp3_files = glob.glob("temp/*mp3")
+    if len(mp3_files) != 0:
+        now = time.time()
+        n_days = n * 86400
+        for f in mp3_files:
+            if os.stat(f).st_mtime < now - n_days:
+                os.remove(f)
+                print("Deleted ", f)
 
 remove_files(7)
+
+st.markdown("</div>", unsafe_allow_html=True)
