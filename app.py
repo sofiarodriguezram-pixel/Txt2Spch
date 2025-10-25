@@ -6,27 +6,38 @@ from gtts import gTTS
 from PIL import Image
 import base64
 
-# --- ESTILOS DE LIBRO ---
+# --- ESTILOS DE LIBRO ABIERTO ---
 st.markdown("""
     <style>
     body {
         background-color: #f5f1e6;
     }
     .book-wrapper {
-        background-color: #fdf8e6;
+        background: linear-gradient(90deg, #fdf8e6 49.5%, #e9e0c9 50.5%);
         width: 85%;
         margin: 50px auto;
         padding: 50px 70px;
         border-radius: 15px;
-        box-shadow: inset 0 0 20px rgba(0,0,0,0.1), 5px 5px 25px rgba(0,0,0,0.3);
+        box-shadow: inset 0 0 25px rgba(0,0,0,0.1), 5px 5px 25px rgba(0,0,0,0.25);
         font-family: 'Georgia', serif;
         color: #3b2d1f;
         line-height: 1.8;
         text-align: justify;
         column-count: 2;
-        column-gap: 70px;
+        column-gap: 80px;
         border-left: 8px solid #d2b48c;
         border-right: 8px solid #d2b48c;
+        position: relative;
+    }
+    .book-wrapper::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 50%;
+        width: 2px;
+        background: #d2b48c;
+        box-shadow: 0 0 4px rgba(0,0,0,0.2);
     }
     .book-title {
         font-family: 'Cursive';
@@ -40,13 +51,13 @@ st.markdown("""
         text-align: center;
         font-style: italic;
         color: #6b4a2b;
-        margin-bottom: 20px;
+        margin-bottom: 25px;
         column-span: all;
     }
     .book-image {
         display: block;
         margin: 0 auto 25px auto;
-        border-radius: 10px;
+        border-radius: 12px;
         box-shadow: 0 4px 12px rgba(0,0,0,0.3);
         width: 260px;
         column-span: all;
@@ -58,7 +69,7 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# --- INTERFAZ ---
+# --- SIDEBAR ---
 with st.sidebar:
     st.subheader("Escribe o selecciona texto para escuchar.")
 
@@ -69,10 +80,11 @@ except:
 
 # --- CONTENIDO DEL LIBRO ---
 st.markdown("<div class='book-wrapper'>", unsafe_allow_html=True)
+
 st.markdown("<h1 class='book-title'>Conversión de Texto a Audio</h1>", unsafe_allow_html=True)
 
 image = Image.open('gato_raton.png')
-st.image(image, use_column_width=False, width=260)
+st.image(image, caption="El gato y el ratón", use_container_width=False, width=260)
 
 st.markdown("<h3 class='book-subtitle'>Una pequeña Fábula</h3>", unsafe_allow_html=True)
 st.markdown("""
