@@ -6,45 +6,50 @@ from gtts import gTTS
 from PIL import Image
 import base64
 
-# --- Estilos tipo libro ---
+# --- Estilos tipo libro abierto ---
 st.markdown("""
     <style>
     body {
-        background-color: #f8f4e6;
+        background-color: #f5f1e6;
     }
-    .book-container {
+    .book-page {
         background-color: #fffaf0;
         border: 2px solid #d2b48c;
-        padding: 50px;
-        margin: 40px auto;
-        width: 80%;
-        border-radius: 15px;
-        box-shadow: 5px 5px 15px rgba(0,0,0,0.2);
+        padding: 50px 70px;
+        margin: 50px auto;
+        width: 85%;
+        border-radius: 20px;
+        box-shadow: 8px 8px 25px rgba(0,0,0,0.2);
         font-family: 'Georgia', serif;
         line-height: 1.8;
         color: #3e2f1c;
+        column-count: 2;
+        column-gap: 60px;
+        text-align: justify;
     }
     .book-title {
         font-family: 'Cursive';
         text-align: center;
-        font-size: 2.5em;
+        font-size: 2.8em;
         color: #4b2e05;
+        margin-bottom: 30px;
     }
     .book-subtitle {
         text-align: center;
         font-style: italic;
         color: #6b4a2b;
+        margin-bottom: 20px;
     }
     </style>
 """, unsafe_allow_html=True)
 
 # --- Contenido tipo libro ---
-st.markdown("<div class='book-container'>", unsafe_allow_html=True)
+st.markdown("<div class='book-page'>", unsafe_allow_html=True)
 
 st.markdown("<h1 class='book-title'>Conversión de Texto a Audio</h1>", unsafe_allow_html=True)
 
 image = Image.open('gato_raton.png')
-st.image(image, width=300)
+st.image(image, width=280, caption="El gato y el ratón")
 
 with st.sidebar:
     st.subheader("Escribe o selecciona texto para escuchar.")
@@ -56,12 +61,12 @@ except:
 
 st.markdown("<h3 class='book-subtitle'>Una pequeña Fábula</h3>", unsafe_allow_html=True)
 st.write("""
-¡Ay! —dijo el ratón—. El mundo se hace cada día más pequeño. 
-Al principio era tan grande que le tenía miedo. Corría y corría y por cierto 
-que me alegraba ver esos muros, a diestra y siniestra, en la distancia. 
-Pero esas paredes se estrechan tan rápido que me encuentro en el último cuarto 
-y ahí en el rincón está la trampa sobre la cual debo pasar. 
-“Todo lo que debes hacer es cambiar de rumbo”, dijo el gato... y se lo comió.
+¡Ay! —dijo el ratón—. El mundo se hace cada día más pequeño.  
+Al principio era tan grande que le tenía miedo. Corría y corría y por cierto  
+que me alegraba ver esos muros, a diestra y siniestra, en la distancia.  
+Pero esas paredes se estrechan tan rápido que me encuentro en el último cuarto  
+y ahí en el rincón está la trampa sobre la cual debo pasar.  
+“Todo lo que debes hacer es cambiar de rumbo”, dijo el gato... y se lo comió.  
 
 **Franz Kafka.**
 """)
